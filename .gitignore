@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/MeCorp.Y
+/MeCorp.Y.Domain/bin
+/MeCorp.Y.Domain/obj
+/MeCorp.Y.Api/bin
+/MeCorp.Y.Api/obj
+/MeCorp.Y.Application/bin
+/MeCorp.Y.Application/obj
+/MeCorp.Y.Infrastructure.Data/bin
+/MeCorp.Y.Infrastructure.Data/obj
+/MeCorp.Y.Security/bin
+/MeCorp.Y.Security/obj
+/MeCorp.Y.Shared/bin
+/MeCorp.Y.Shared/obj
