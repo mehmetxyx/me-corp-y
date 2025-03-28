@@ -1,5 +1,6 @@
 ﻿using MeCorp.Y.Api;
 using MeCorp.Y.Domain.DomainEntities;
+using MeCorp.Y.Domain.Enums;
 using MeCorp.Y.Infrastructure.Data.PersistenceEntities;
 using MeCorp.Y.Shared;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +15,10 @@ public class UserRepository : IUserRepository
     {
         this.dbContext = dbContext;
     }
-    public async Task<Result<User>> Add(User user)
+    public async Task Add(User user)
     {
         var userEntity = user.ToEntity();
         await dbContext.Users.AddAsync(userEntity);
-
-        return new Result<User>
-        {
-            IsSuccessful = true, 
-            Value = userEntity.ToDomainEntity()
-        };
     }
 
     public async Task<Result<User>> GetUserById(int id)
@@ -63,7 +58,7 @@ public class UserRepository : IUserRepository
     public async Task<Result<List<User>>> GetAdminSummary()
     {
         var users = await dbContext.Users
-            .Where(u => u.Role == "Admin")
+            .Where(u => u.Role == UserRole.Admin)
             .ToListAsync();
 
 

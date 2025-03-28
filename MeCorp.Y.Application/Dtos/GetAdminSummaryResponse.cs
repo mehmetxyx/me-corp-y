@@ -1,11 +1,11 @@
-﻿
-namespace MeCorp.Y.Application.Dtos
+﻿using MeCorp.Y.Domain.Enums;
+
+namespace MeCorp.Y.Application.Dtos;
+
+public class GetAdminSummaryResponse
 {
-    public class GetAdminSummaryResponse
-    {
-        public int Id { get; internal set; }
-        public string Username { get; internal set; }
-        public string Role { get; internal set; }
-        public DateTime CreatedAtUtc { get; internal set; }
-    }
+    public int Id { get; internal set; }
+    public string Username { get; internal set; }
+    public UserRole Role { get; internal set; }
+    public DateTime CreatedAtUtc { get; internal set; }
 }

@@ -1,5 +1,4 @@
-﻿
-namespace MeCorp.Y.Application.Dtos;
+﻿namespace MeCorp.Y.Application.Dtos;
 
 public class CreateReferralTokenResponse
 {

@@ -1,5 +1,4 @@
-﻿
-namespace MeCorp.Y.Domain.DomainEntities;
+﻿namespace MeCorp.Y.Domain.DomainEntities;
 
 public class ReferralToken
 {

@@ -51,15 +51,10 @@ public class AuthorizationService : IAuthorizationService
                 CreatedAtUtc = DateTime.UtcNow
             };
 
-            Result<User> createUserResult = await userRepository.Add(user);
-
-            if (!createUserResult.IsSuccessful)
-                return new Result<RegisteredUserResponseDto>
-                {
-                    Message = $"User {userRequest.Username} cannot be created. {createUserResult.Message}"
-                };
-
+            await userRepository.Add(user);
             await unitOfWork.SaveAsync();
+
+            var createUserResult = await userRepository.GetUsersByUsername(userRequest.Username);
 
             return new Result<RegisteredUserResponseDto>
             {
@@ -114,7 +109,7 @@ public class AuthorizationService : IAuthorizationService
             {
                 UserId = userResult.Value.Id,
                 Username = userResult.Value.Username,
-                Role = userResult.Value.Role
+                Role = userResult.Value.Role.ToString()
             });
 
             return new Result<LoginUserResponseDto>

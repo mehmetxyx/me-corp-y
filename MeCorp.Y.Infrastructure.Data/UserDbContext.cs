@@ -10,6 +10,14 @@ public class UserDbContext: DbContext
     {
     }
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<RoleEntity> Roles { get; set; }
     public DbSet<ReferralTokenEntity> ReferralTokens { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UserEntity>()
+            .Property(user => user.Role)
+            .HasConversion<string>();
+
+        base.OnModelCreating(modelBuilder);
+    }
 }

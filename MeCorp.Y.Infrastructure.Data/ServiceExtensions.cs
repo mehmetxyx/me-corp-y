@@ -10,9 +10,18 @@ public static class ServiceExtensions
 {
     public static void AddDataServices(this IServiceCollection services, IConfigurationManager connectionManager)
     {
-        services.AddDbContext<UserDbContext>(options => options.UseInMemoryDatabase("mydb"));
+        var connectionString = connectionManager.GetConnectionString("PostgresqlDb");
+        //services.AddDbContext<UserDbContext>(options => options.UseInMemoryDatabase("mydb"));
+        services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IReferralTokenRepository, ReferralTokenRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+
+    public static void InitializeDatabase(this IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+        dbContext.Database.EnsureCreated();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MeCorp.Y.Domain.DomainEntities;
+using MeCorp.Y.Domain.Enums;
 
 namespace MeCorp.Y.Infrastructure.Data.PersistenceEntities;
 
@@ -7,7 +8,7 @@ public class UserEntity
     public int Id { get; set; }
     public string Username { get; set; }
     public string PasswordHash { get; set; }
-    public string Role { get; set; }
+    public UserRole Role { get; set; }
     public int FailedLoginAttempts { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }
