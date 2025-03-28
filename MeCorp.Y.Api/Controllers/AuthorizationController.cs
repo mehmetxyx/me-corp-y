@@ -3,11 +3,13 @@ using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Application.Services;
 using MeCorp.Y.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace MeCorp.Y.Api.Controllers;
 
 [Route("api/auth")]
 [ApiController]
+[EnableRateLimiting("FixedWindowPolicy")]
 public class AuthorizationController : ControllerBase
 {
     private readonly IAuthorizationService authorizationService;

@@ -2,11 +2,13 @@
 using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Shared;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace MeCorp.Y.Api.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [EnableRateLimiting("FixedWindowPolicy")]
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
