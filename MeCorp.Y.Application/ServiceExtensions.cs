@@ -9,6 +9,6 @@ public static class ServiceExtensions
     public static void AddApplicationLayerServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddScoped<IAuthService, AuthService>();
     }
 }

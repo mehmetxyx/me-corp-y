@@ -1,7 +1,9 @@
 ﻿using MeCorp.Y.Application;
 using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Application.Services;
+using MeCorp.Y.Domain.Enums;
 using MeCorp.Y.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -10,16 +12,18 @@ namespace MeCorp.Y.Api.Controllers;
 [Route("api/auth")]
 [ApiController]
 [EnableRateLimiting("FixedWindowPolicy")]
-public class AuthorizationController : ControllerBase
+[Authorize]
+public class AuthController : ControllerBase
 {
-    private readonly IAuthorizationService authorizationService;
+    private readonly IAuthService authorizationService;
 
-    public AuthorizationController(IAuthorizationService authorizationService)
+    public AuthController(IAuthService authService)
     {
-        this.authorizationService = authorizationService;
+        this.authorizationService = authService;
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<ActionResult<RegisteredUserResponseDto>> Register(RegisteredUserRequestDto registeredUserRequestDto)
     {
         Result<RegisteredUserResponseDto> result = await authorizationService.CreateUserAsync(registeredUserRequestDto);
@@ -30,6 +34,7 @@ public class AuthorizationController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<ActionResult<LoginUserResponseDto>> Login(LoginUserRequestDto loginUserRequestDto)
     {
         Result<LoginUserResponseDto> result = await authorizationService.LoginAsync(loginUserRequestDto);
@@ -40,10 +45,10 @@ public class AuthorizationController : ControllerBase
         return Ok(result.Value);
     }
 
-    [HttpGet("referral-tokens")]
-    public async Task<ActionResult<GetReferralTokenResponse>> GetReferralToken([FromQuery] GetReferralTokenRequest referralTokenRequest)
+    [HttpGet("referral-tokens/{code}")]
+    public async Task<ActionResult<GetReferralTokenResponse>> GetReferralToken(string code)
     {
-        Result<GetReferralTokenResponse> result = await authorizationService.GetReferralTokenAsync(referralTokenRequest);
+        Result<GetReferralTokenResponse> result = await authorizationService.GetReferralTokenAsync(code);
 
         if (!result.IsSuccessful)
             return BadRequest(result.Message);
@@ -52,6 +57,7 @@ public class AuthorizationController : ControllerBase
     }
 
     [HttpPost("referral-tokens")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<CreateReferralTokenResponse>> CreateReferralToken(CreateReferralTokenRequest referralTokenRequest)
     {
         Result<CreateReferralTokenResponse> result = await authorizationService.CreateReferalTokenAsync(referralTokenRequest);
@@ -60,11 +66,5 @@ public class AuthorizationController : ControllerBase
             return BadRequest(result.Message);
 
         return Ok(result.Value);
-    }
-
-    [HttpGet("aa")]
-    public ActionResult Get()
-    {
-        return Ok("asdf");
     }
 }

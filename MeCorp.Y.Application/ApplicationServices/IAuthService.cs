@@ -2,10 +2,10 @@
 using MeCorp.Y.Shared;
 namespace MeCorp.Y.Application.Services;
 
-public interface IAuthorizationService
+public interface IAuthService
 {
     Task<Result<RegisteredUserResponseDto>> CreateUserAsync(RegisteredUserRequestDto registeredUserRequestDto);
     Task<Result<LoginUserResponseDto>> LoginAsync(LoginUserRequestDto loginUserRequestDto);
-    Task<Result<GetReferralTokenResponse>> GetReferralTokenAsync(GetReferralTokenRequest referralTokenRequest);
+    Task<Result<GetReferralTokenResponse>> GetReferralTokenAsync(string code);
     Task<Result<CreateReferralTokenResponse>> CreateReferalTokenAsync(CreateReferralTokenRequest referralTokenRequest);
 }

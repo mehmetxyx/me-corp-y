@@ -8,17 +8,17 @@ using Microsoft.Extensions.Logging;
 
 namespace MeCorp.Y.Application.Services;
 
-public class AuthorizationService : IAuthorizationService
+public class AuthService : IAuthService
 {
-    private readonly ILogger<AuthorizationService> logger;
+    private readonly ILogger<AuthService> logger;
     private readonly IUnitOfWork unitOfWork;
     private readonly IUserRepository userRepository;
     private readonly IPasswordService passwordService;
     private readonly ITokenService tokenService;
     private readonly IReferralTokenRepository referralTokenRepository;
 
-    public AuthorizationService(
-        ILogger<AuthorizationService> logger,
+    public AuthService(
+        ILogger<AuthService> logger,
         IUnitOfWork unitOfWork,
         IUserRepository userRepository,
         IPasswordService passwordService,
@@ -40,6 +40,13 @@ public class AuthorizationService : IAuthorizationService
             Result<User> usersResult = await userRepository.GetUsersByUsername(userRequest.Username);
             if (usersResult.IsSuccessful)
                 return new Result<RegisteredUserResponseDto> { Message = $"User {userRequest.Username} already exist" };
+
+            if(userRequest.Role == Domain.Enums.UserRole.Admin)
+            {
+                Result<ReferralToken> referralResult = await referralTokenRepository.GetByCode(userRequest.ReferralCode);
+                if(!referralResult.IsSuccessful || !referralResult.Value.IsValid)
+                    return new Result<RegisteredUserResponseDto> { Message = $"Referral code is invalid!" };
+            }
 
             string passwordHash = passwordService.GetPasswordHash(userRequest.Password);
 
@@ -133,16 +140,16 @@ public class AuthorizationService : IAuthorizationService
         return new Result<LoginUserResponseDto> { Message = "An error occured while validating password!" };
     }
 
-    public async Task<Result<GetReferralTokenResponse>> GetReferralTokenAsync(GetReferralTokenRequest referralTokenRequest)
+    public async Task<Result<GetReferralTokenResponse>> GetReferralTokenAsync(string code)
     {
         try
         {
-            Result<ReferralToken> result = await referralTokenRepository.GetByCode(referralTokenRequest.Code);
+            Result<ReferralToken> result = await referralTokenRepository.GetByCode(code);
 
             if (!result.IsSuccessful)
             {
-                logger.LogError("Cannot find referral token code {code}", referralTokenRequest.Code);
-                return new Result<GetReferralTokenResponse> { Message = $"Cannot find referral token code {referralTokenRequest.Code}" };
+                logger.LogError("Cannot find referral token code {code}", code);
+                return new Result<GetReferralTokenResponse> { Message = $"Cannot find referral token code {code}" };
             }
 
             return new Result<GetReferralTokenResponse>
@@ -159,7 +166,7 @@ public class AuthorizationService : IAuthorizationService
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Cannot find referral token code {code}", referralTokenRequest.Code);
+            logger.LogError(ex, "Cannot find referral token code {code}", code);
         }
 
         return new Result<GetReferralTokenResponse> { Message = "An error occured while validating password!" };
