@@ -43,15 +43,15 @@ public class UsersController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ApiResponse<List<GetAdminSummaryResponse>>>> GetAdminSummary()
     {
-        Result<List<GetAdminSummaryResponse>> result = await userService.GetAdminSummary();
+        Result<GetAdminSummaryResponse> result = await userService.GetAdminSummary();
         
         if (!result.IsSuccessful)
-            return BadRequest(new ApiResponse<List<GetAdminSummaryResponse>>
+            return BadRequest(new ApiResponse<GetAdminSummaryResponse>
             {
                 Message = result.Message
             });
 
-        return Ok(new ApiResponse<List<GetAdminSummaryResponse>>
+        return Ok(new ApiResponse<GetAdminSummaryResponse>
         {
             IsSuccessful = true,
             Data = result.Value

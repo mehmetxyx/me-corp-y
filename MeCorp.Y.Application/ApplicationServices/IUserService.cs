@@ -5,6 +5,6 @@ namespace MeCorp.Y.Application.ApplicationServices;
 
 public interface IUserService
 {
-    Task<Result<List<GetAdminSummaryResponse>>> GetAdminSummary();
+    Task<Result<GetAdminSummaryResponse>> GetAdminSummary();
     Task<Result<GetUserResponse>> GetUserById(int id);
 }

@@ -1,5 +1,6 @@
 ﻿using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Domain.DomainEntities;
+using MeCorp.Y.Domain.Enums;
 using MeCorp.Y.Infrastructure.Data;
 using MeCorp.Y.Infrastructure.Data.Repositories;
 using MeCorp.Y.Infrastructure.Security;
@@ -41,11 +42,15 @@ public class AuthService : IAuthService
             if (usersResult.IsSuccessful)
                 return new Result<RegisteredUserResponseDto> { Message = $"User {userRequest.Username} already exist" };
 
-            if(userRequest.Role == Domain.Enums.UserRole.Admin)
+            UserRole userRole = UserRole.Customer;
+
+            if(userRequest.ReferralCode is not null)
             {
                 Result<ReferralToken> referralResult = await referralTokenRepository.GetByCode(userRequest.ReferralCode);
                 if(!referralResult.IsSuccessful || !referralResult.Value.IsValid)
                     return new Result<RegisteredUserResponseDto> { Message = $"Referral code is invalid!" };
+
+                userRole = UserRole.Manager;
             }
 
             string passwordHash = passwordService.GetPasswordHash(userRequest.Password);
@@ -53,7 +58,7 @@ public class AuthService : IAuthService
             var user = new User
             {
                 Username = userRequest.Username,
-                Role = userRequest.Role,
+                Role = userRole,
                 PasswordHash = passwordHash,
                 CreatedAtUtc = DateTime.UtcNow
             };
@@ -99,7 +104,7 @@ public class AuthService : IAuthService
                 userResult.Value.IncreaseFailedLoginCount();
 
                 await userRepository.Update(userResult.Value);
-                unitOfWork.SaveAsync();
+                await unitOfWork.SaveAsync();
 
                 if (userResult.Value.IsBlocked)
                     return new Result<LoginUserResponseDto> { Message = $"User {loginUserRequest.Username} blocked for too many failed logins!" };
@@ -108,9 +113,9 @@ public class AuthService : IAuthService
             }
 
             userResult.Value.ResetFailedLogins();
-            userRepository.Update(userResult.Value);
+            await userRepository.Update(userResult.Value);
 
-            unitOfWork.SaveAsync();
+            await unitOfWork.SaveAsync();
 
             var token = tokenService.GenerateToken(new GenerateTokenArguments
             {

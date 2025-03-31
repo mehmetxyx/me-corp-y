@@ -2,6 +2,7 @@
 using MeCorp.Y.Domain.DomainEntities;
 using MeCorp.Y.Domain.Enums;
 using MeCorp.Y.Infrastructure.Data.PersistenceEntities;
+using MeCorp.Y.Infrastructure.Data.Queries;
 using MeCorp.Y.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,21 +56,20 @@ public class UserRepository : IUserRepository
         };
     }
 
-    public async Task<Result<List<User>>> GetAdminSummary()
+    public async Task<AdminSummaryResult> GetAdminSummary()
     {
-        var users = await dbContext.Users
-            .Where(u => u.Role == UserRole.Admin)
-            .ToListAsync();
+        var customerCount = await dbContext.Users
+            .Where(u => u.Role == UserRole.Customer)
+            .CountAsync();
 
+        var managerCount = await dbContext.Users
+            .Where(u => u.Role == UserRole.Manager)
+            .CountAsync();
 
-        if (users is null || users.Count == 0)
-            return new Result<List<User>> { Message = "No Admin users found!" };
-
-        var domainUsers = users.Select(u => u.ToDomainEntity()).ToList();
-        return new Result<List<User>> 
+        return new AdminSummaryResult
         { 
-            IsSuccessful = true,
-            Value = domainUsers
+            CustomerCount = customerCount,
+            ManagerCount = managerCount
         };
     }
 
@@ -80,6 +80,5 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync();
 
         userEntity.FailedLoginAttempts = user.FailedLoginAttempts;
-        //dbContext.Entry(userEntity).State = EntityState.Modified;
     }
 }
