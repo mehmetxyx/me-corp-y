@@ -36,6 +36,17 @@ public static class ServiceExtensions
                     IssuerSigningKey = symmetricSecurityKey
                 };
             });
+
+        services.AddCors(corsOptions =>
+        {
+            corsOptions.AddPolicy("AllowWeb", corsPolicyBuilder =>
+            {
+                corsPolicyBuilder
+                .WithOrigins("http://localhost:5218")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+            });
+        });
     }
 
     public static void AddRateLimiterPolicies(this IServiceCollection services)
@@ -52,5 +63,14 @@ public static class ServiceExtensions
                 rateLimiterOptions.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
             });
         });
+    }
+
+    public static void UseSecurityServices(this IApplicationBuilder applicationBuilder)
+    {
+        //applicationBuilder.UseHttpsRedirection();
+        applicationBuilder.UseRateLimiter();
+        applicationBuilder.UseCors("AllowWeb");
+        applicationBuilder.UseAuthentication();
+        applicationBuilder.UseAuthorization();
     }
 }

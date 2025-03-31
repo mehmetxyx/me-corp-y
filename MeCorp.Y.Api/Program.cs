@@ -15,6 +15,7 @@ builder.Services.AddApplicationLayerServices();
 builder.Services.AddDataServices(builder.Configuration);
 builder.Services.AddSecurityServices(builder.Configuration);
 builder.Services.AddRateLimiterPolicies();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,11 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.Services.InitializeDatabase();
-
-app.UseHttpsRedirection();
-app.UseRateLimiter();
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseSecurityServices();
 app.MapControllers();
 
 app.Run();
