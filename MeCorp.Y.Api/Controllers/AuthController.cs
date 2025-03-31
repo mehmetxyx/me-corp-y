@@ -1,7 +1,6 @@
-﻿using MeCorp.Y.Application;
+﻿using MeCorp.Y.Api.Models;
 using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Application.Services;
-using MeCorp.Y.Domain.Enums;
 using MeCorp.Y.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,47 +23,74 @@ public class AuthController : ControllerBase
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<ActionResult<RegisteredUserResponseDto>> Register(RegisteredUserRequestDto registeredUserRequestDto)
+    public async Task<ActionResult<ApiResponse<RegisteredUserResponseDto>>> Register(RegisteredUserRequestDto registeredUserRequestDto)
     {
         Result<RegisteredUserResponseDto> result = await authorizationService.CreateUserAsync(registeredUserRequestDto);
 
         if (!result.IsSuccessful)
-            return BadRequest(result.Message);
-        return Ok(result.Value);
+            return BadRequest(new ApiResponse<RegisteredUserResponseDto> { 
+                Message = result.Message 
+            });
+
+        return Ok(new ApiResponse<RegisteredUserResponseDto> { 
+            IsSuccessful = true, 
+            Data = result.Value 
+        });
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<LoginUserResponseDto>> Login(LoginUserRequestDto loginUserRequestDto)
+    public async Task<ActionResult<ApiResponse<LoginUserResponseDto>>> Login(LoginUserRequestDto loginUserRequestDto)
     {
         Result<LoginUserResponseDto> result = await authorizationService.LoginAsync(loginUserRequestDto);
 
         if (!result.IsSuccessful)
-            return BadRequest(result.Message);
+            return BadRequest(new ApiResponse<LoginUserResponseDto>
+            {
+                Message = result.Message
+            });
 
-        return Ok(result.Value);
+        return Ok(new ApiResponse<LoginUserResponseDto>
+        {
+            IsSuccessful = true,
+            Data = result.Value
+        });
     }
 
     [HttpGet("referral-tokens/{code}")]
-    public async Task<ActionResult<GetReferralTokenResponse>> GetReferralToken(string code)
+    public async Task<ActionResult<ApiResponse<GetReferralTokenResponse>>> GetReferralToken(string code)
     {
         Result<GetReferralTokenResponse> result = await authorizationService.GetReferralTokenAsync(code);
 
         if (!result.IsSuccessful)
-            return BadRequest(result.Message);
+            return BadRequest(new ApiResponse<GetReferralTokenResponse>
+            {
+                Message = result.Message
+            });
 
-        return Ok(result.Value);
+        return Ok(new ApiResponse<GetReferralTokenResponse>
+        {
+            IsSuccessful = true,
+            Data = result.Value
+        });
     }
 
     [HttpPost("referral-tokens")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<CreateReferralTokenResponse>> CreateReferralToken(CreateReferralTokenRequest referralTokenRequest)
+    public async Task<ActionResult<ApiResponse<CreateReferralTokenResponse>>> CreateReferralToken(CreateReferralTokenRequest referralTokenRequest)
     {
         Result<CreateReferralTokenResponse> result = await authorizationService.CreateReferalTokenAsync(referralTokenRequest);
 
         if (!result.IsSuccessful)
-            return BadRequest(result.Message);
+            return BadRequest(new ApiResponse<CreateReferralTokenResponse>
+            {
+                Message = result.Message
+            });
 
-        return Ok(result.Value);
+        return Ok(new ApiResponse<CreateReferralTokenResponse>
+        {
+            IsSuccessful = true,
+            Data = result.Value
+        });
     }
 }

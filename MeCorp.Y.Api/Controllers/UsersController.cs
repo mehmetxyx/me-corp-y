@@ -1,4 +1,5 @@
-﻿using MeCorp.Y.Application.ApplicationServices;
+﻿using MeCorp.Y.Api.Models;
+using MeCorp.Y.Application.ApplicationServices;
 using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -21,25 +22,39 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GetUserResponse>> GetUser(int id)
+    public async Task<ActionResult<ApiResponse<GetUserResponse>>> GetUser(int id)
     {
         Result<GetUserResponse> result = await userService.GetUserById(id);
 
         if (!result.IsSuccessful)
-            return BadRequest(result.Message);
+            return BadRequest(new ApiResponse<GetUserResponse>
+            {
+                Message = result.Message
+            });
 
-        return Ok(result.Value);
+        return Ok(new ApiResponse<GetUserResponse>
+        {
+            IsSuccessful = true,
+            Data = result.Value
+        });
     }
     
     [HttpGet("admin-summary")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<GetAdminSummaryResponse>> GetAdminSummary()
+    public async Task<ActionResult<ApiResponse<List<GetAdminSummaryResponse>>>> GetAdminSummary()
     {
         Result<List<GetAdminSummaryResponse>> result = await userService.GetAdminSummary();
-
+        
         if (!result.IsSuccessful)
-            return BadRequest(result.Message);
+            return BadRequest(new ApiResponse<List<GetAdminSummaryResponse>>
+            {
+                Message = result.Message
+            });
 
-        return Ok(result.Value);
+        return Ok(new ApiResponse<List<GetAdminSummaryResponse>>
+        {
+            IsSuccessful = true,
+            Data = result.Value
+        });
     }
 }
