@@ -79,6 +79,9 @@ public class UserRepository : IUserRepository
             .Where(u => u.Id == user.Id)
             .FirstOrDefaultAsync();
 
-        userEntity.FailedLoginAttempts = user.FailedLoginAttempts;
+        if (userEntity is null)
+            return;
+
+        userEntity.Role  = user.Role;
     }
 }

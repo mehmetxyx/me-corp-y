@@ -42,7 +42,9 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<LoginUserResponseDto>>> Login(LoginUserRequestDto loginUserRequestDto)
     {
-        Result<LoginUserResponseDto> result = await authorizationService.LoginAsync(loginUserRequestDto);
+        var userIp = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+        Result<LoginUserResponseDto> result = await authorizationService.LoginAsync(loginUserRequestDto, userIp);
 
         if (!result.IsSuccessful)
             return BadRequest(new ApiResponse<LoginUserResponseDto>

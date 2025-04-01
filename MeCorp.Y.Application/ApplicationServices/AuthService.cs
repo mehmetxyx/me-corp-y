@@ -1,8 +1,8 @@
 ﻿using MeCorp.Y.Application.Dtos;
 using MeCorp.Y.Domain.DomainEntities;
 using MeCorp.Y.Domain.Enums;
-using MeCorp.Y.Infrastructure.Data;
 using MeCorp.Y.Infrastructure.Data.Repositories;
+using MeCorp.Y.Infrastructure.Data.UnitOfWorks;
 using MeCorp.Y.Infrastructure.Security;
 using MeCorp.Y.Shared;
 using Microsoft.Extensions.Logging;
@@ -17,6 +17,7 @@ public class AuthService : IAuthService
     private readonly IPasswordService passwordService;
     private readonly ITokenService tokenService;
     private readonly IReferralTokenRepository referralTokenRepository;
+    private readonly IBlockedIpRepository blockedIpRepository;
 
     public AuthService(
         ILogger<AuthService> logger,
@@ -24,7 +25,8 @@ public class AuthService : IAuthService
         IUserRepository userRepository,
         IPasswordService passwordService,
         ITokenService tokenService,
-        IReferralTokenRepository referralTokenRepository)
+        IReferralTokenRepository referralTokenRepository,
+        IBlockedIpRepository blockedIpRepository)
     {
         this.logger = logger;
         this.unitOfWork = unitOfWork;
@@ -32,6 +34,7 @@ public class AuthService : IAuthService
         this.passwordService = passwordService;
         this.tokenService = tokenService;
         this.referralTokenRepository = referralTokenRepository;
+        this.blockedIpRepository = blockedIpRepository;
     }
 
     public async Task<Result<RegisteredUserResponseDto>> CreateUserAsync(RegisteredUserRequestDto userRequest)
@@ -91,31 +94,37 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<Result<LoginUserResponseDto>> LoginAsync(LoginUserRequestDto loginUserRequest)
+    public async Task<Result<LoginUserResponseDto>> LoginAsync(LoginUserRequestDto loginUserRequest, string? userIp)
     {
         try
         {
+            Result<BlockedIp> blockedIpResult = await blockedIpRepository.GetBlockedIpByIpAddress(userIp);
+
+            if (blockedIpResult.IsSuccessful &&  blockedIpResult.Value.IsBlocked)
+                return new Result<LoginUserResponseDto> { Message = $"Ip address {userIp} blocked for too many failed logins!" };
+
+            var blockedIp = blockedIpResult?.Value ?? new BlockedIp { 
+                IpAddress = userIp, 
+                CreatedAtUtc = DateTime.UtcNow
+            };
+
             Result<User> userResult = await userRepository.GetUsersByUsername(loginUserRequest.Username);
             if (!userResult.IsSuccessful)
                 return new Result<LoginUserResponseDto> { Message = $"User {loginUserRequest.Username} doesn't exist!" };
 
             if(!passwordService.IsValidPassword(loginUserRequest.Password, userResult.Value.PasswordHash))
             {
-                userResult.Value.IncreaseFailedLoginCount();
+                blockedIp.IncreaseFailedLoginCount();
 
-                await userRepository.Update(userResult.Value);
+                if (blockedIp.Id == 0)
+                    await blockedIpRepository.Add(blockedIp);
+                else
+                    await blockedIpRepository.Update(blockedIp);
+
                 await unitOfWork.SaveAsync();
-
-                if (userResult.Value.IsBlocked)
-                    return new Result<LoginUserResponseDto> { Message = $"User {loginUserRequest.Username} blocked for too many failed logins!" };
 
                 return new Result<LoginUserResponseDto> { Message = "Invalid password!" };
             }
-
-            userResult.Value.ResetFailedLogins();
-            await userRepository.Update(userResult.Value);
-
-            await unitOfWork.SaveAsync();
 
             var token = tokenService.GenerateToken(new GenerateTokenArguments
             {

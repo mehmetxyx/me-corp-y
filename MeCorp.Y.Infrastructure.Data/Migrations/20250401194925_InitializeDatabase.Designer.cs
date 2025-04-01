@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeCorp.Y.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20250401160919_InitializeDatabase")]
+    [Migration("20250401194925_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -24,6 +24,31 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("MeCorp.Y.Infrastructure.Data.PersistenceEntities.BlockedIpEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BlockUntil")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlockedIps");
+                });
 
             modelBuilder.Entity("MeCorp.Y.Infrastructure.Data.PersistenceEntities.ReferralTokenEntity", b =>
                 {
@@ -52,14 +77,14 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             Code = "CreateAsManager",
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(4255),
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(5401),
                             IsValid = true
                         },
                         new
                         {
                             Id = 2,
                             Code = "FromLinkedin",
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(4471),
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(5717),
                             IsValid = true
                         });
                 });
@@ -74,9 +99,6 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("FailedLoginAttempts")
-                        .HasColumnType("integer");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -98,8 +120,7 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(174),
-                            FailedLoginAttempts = 0,
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(1545),
                             PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==",
                             Role = "Admin",
                             Username = "mehmet"
@@ -107,8 +128,7 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(635),
-                            FailedLoginAttempts = 0,
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(1962),
                             PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==",
                             Role = "Admin",
                             Username = "mecorp"

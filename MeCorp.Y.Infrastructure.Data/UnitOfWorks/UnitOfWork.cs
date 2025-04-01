@@ -1,6 +1,6 @@
 ﻿using MeCorp.Y.Api;
 
-namespace MeCorp.Y.Infrastructure.Data;
+namespace MeCorp.Y.Infrastructure.Data.UnitOfWorks;
 
 public class UnitOfWork : IUnitOfWork
 {

@@ -9,7 +9,6 @@ public class UserEntity
     public string Username { get; set; }
     public string PasswordHash { get; set; }
     public UserRole Role { get; set; }
-    public int FailedLoginAttempts { get; set; }
     public DateTime CreatedAtUtc { get; set; }
 }
 
@@ -22,7 +21,6 @@ public static class UserExtensions
             Id = user.Id,
             Username = user.Username,
             PasswordHash = user.PasswordHash,
-            FailedLoginAttempts = user.FailedLoginAttempts,
             Role = user.Role,
             CreatedAtUtc = user.CreatedAtUtc
         };
@@ -35,7 +33,6 @@ public static class UserExtensions
             Id = userEntity.Id,
             Username = userEntity.Username,
             PasswordHash = userEntity.PasswordHash,
-            FailedLoginAttempts = userEntity.FailedLoginAttempts,
             Role = userEntity.Role,
             CreatedAtUtc = userEntity.CreatedAtUtc
         };

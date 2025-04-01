@@ -6,6 +6,8 @@ using Xunit;
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
 using MeCorp.Y.Shared;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace MeCorp.Y.Api.Tests;
 
@@ -92,11 +94,17 @@ public class AuthControllerTests
             Username = "username"
         };
 
-        authService.LoginAsync(userRequest)
+        var ip = "127.0.0.1";
+
+        authService.LoginAsync(userRequest, ip)
             .Returns(new Result<LoginUserResponseDto> {
                 IsSuccessful = true,
                 Value = userResponse
             });
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Connection.RemoteIpAddress = IPAddress.Parse(ip);
+        authController.ControllerContext.HttpContext = httpContext;
 
         var actionResult = await authController.Login(userRequest);
 
@@ -123,11 +131,17 @@ public class AuthControllerTests
             Username = "username"
         };
 
-        authService.LoginAsync(userRequest)
+        var ip = "127.0.0.1";
+
+        authService.LoginAsync(userRequest, ip)
             .Returns(new Result<LoginUserResponseDto>
             {
                 IsSuccessful = false
             });
+
+        var httpContext = new DefaultHttpContext();
+        httpContext.Connection.RemoteIpAddress = IPAddress.Parse(ip);
+        authController.ControllerContext.HttpContext = httpContext;
 
         var actionResult = await authController.Login(userRequest);
 

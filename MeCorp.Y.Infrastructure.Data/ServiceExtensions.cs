@@ -1,5 +1,6 @@
 ﻿using MeCorp.Y.Api;
 using MeCorp.Y.Infrastructure.Data.Repositories;
+using MeCorp.Y.Infrastructure.Data.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public static class ServiceExtensions
         services.AddDbContext<UserDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IReferralTokenRepository, ReferralTokenRepository>();
+        services.AddScoped<IBlockedIpRepository, BlockedIpRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 

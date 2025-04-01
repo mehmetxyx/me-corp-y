@@ -1,4 +1,4 @@
-﻿namespace MeCorp.Y.Infrastructure.Data;
+﻿namespace MeCorp.Y.Infrastructure.Data.UnitOfWorks;
 
 public interface IUnitOfWork
 {

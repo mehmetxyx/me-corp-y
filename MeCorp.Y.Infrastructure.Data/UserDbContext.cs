@@ -11,6 +11,7 @@ public class UserDbContext : DbContext
     }
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ReferralTokenEntity> ReferralTokens { get; set; }
+    public DbSet<BlockedIpEntity> BlockedIps { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
