@@ -41,7 +41,7 @@ public class UsersController : ControllerBase
     
     [HttpGet("admin-summary")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<ApiResponse<List<GetAdminSummaryResponse>>>> GetAdminSummary()
+    public async Task<ActionResult<ApiResponse<GetAdminSummaryResponse>>> GetAdminSummary()
     {
         Result<GetAdminSummaryResponse> result = await userService.GetAdminSummary();
         

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeCorp.Y.Shared", "MeCorp.Y.Shared\MeCorp.Y.Shared.csproj", "{EBAE1C79-116F-4AE7-AD25-DD05C3F3CADA}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeCorp.Y.Api", "MeCorp.Y.Api\MeCorp.Y.Api.csproj", "{5B270A26-F6C7-4367-A16A-0B065F59E3EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeCorp.Y.Web", "MeCorp.Y.Web\MeCorp.Y.Web.csproj", "{B711D601-ED28-4C2A-9EF7-F82C4E89B96B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeCorp.Y.Api.Tests", "MeCorp.Y.Api.Tests\MeCorp.Y.Api.Tests.csproj", "{1AC6C578-75C4-40BC-B57F-B7894F88CFA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeCorp.Y.Application.Tests", "MeCorp.Y.Application.Tests\MeCorp.Y.Application.Tests.csproj", "{40676B55-8964-435A-8085-134378326BE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{B711D601-ED28-4C2A-9EF7-F82C4E89B96B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B711D601-ED28-4C2A-9EF7-F82C4E89B96B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B711D601-ED28-4C2A-9EF7-F82C4E89B96B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC6C578-75C4-40BC-B57F-B7894F88CFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC6C578-75C4-40BC-B57F-B7894F88CFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC6C578-75C4-40BC-B57F-B7894F88CFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC6C578-75C4-40BC-B57F-B7894F88CFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40676B55-8964-435A-8085-134378326BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40676B55-8964-435A-8085-134378326BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40676B55-8964-435A-8085-134378326BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40676B55-8964-435A-8085-134378326BE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

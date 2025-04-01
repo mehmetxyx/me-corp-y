@@ -15,6 +15,10 @@
 /MeCorp.Y.Security/obj
 /MeCorp.Y.Shared/bin
 /MeCorp.Y.Shared/obj
-/MeCorp.Y.Web/bin/Debug/net9.0
+/MeCorp.Y.Web/bin
 /MeCorp.Y.Web/obj
 /.vs/ProjectEvaluation
+/MeCorp.Y.Api.Tests/bin
+/MeCorp.Y.Api.Tests/obj
+/MeCorp.Y.Application.Tests/bin
+/MeCorp.Y.Application.Tests/obj

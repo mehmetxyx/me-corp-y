@@ -2,8 +2,8 @@
 
 public class GetReferralTokenResponse
 {
-    public string Code { get; internal set; }
-    public int Id { get; internal set; }
-    public DateTime CreatedAtUtc { get; internal set; }
-    public bool IsValid { get; internal set; }
+    public string Code { get; set; }
+    public int Id { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
+    public bool IsValid { get; set; }
 }
