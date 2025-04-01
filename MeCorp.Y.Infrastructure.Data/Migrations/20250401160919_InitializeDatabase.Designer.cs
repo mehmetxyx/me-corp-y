@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeCorp.Y.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20250328205931_InitializeDatabase")]
+    [Migration("20250401160919_InitializeDatabase")]
     partial class InitializeDatabase
     {
         /// <inheritdoc />
@@ -51,15 +51,15 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Code = "CreateAsAdmin",
-                            CreatedAtUtc = new DateTime(2025, 3, 28, 20, 59, 30, 390, DateTimeKind.Utc).AddTicks(2146),
+                            Code = "CreateAsManager",
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(4255),
                             IsValid = true
                         },
                         new
                         {
                             Id = 2,
                             Code = "FromLinkedin",
-                            CreatedAtUtc = new DateTime(2025, 3, 28, 20, 59, 30, 390, DateTimeKind.Utc).AddTicks(2592),
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(4471),
                             IsValid = true
                         });
                 });
@@ -93,6 +93,26 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(174),
+                            FailedLoginAttempts = 0,
+                            PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==",
+                            Role = "Admin",
+                            Username = "mehmet"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAtUtc = new DateTime(2025, 4, 1, 16, 9, 19, 533, DateTimeKind.Utc).AddTicks(635),
+                            FailedLoginAttempts = 0,
+                            PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==",
+                            Role = "Admin",
+                            Username = "mecorp"
+                        });
                 });
 #pragma warning restore 612, 618
         }

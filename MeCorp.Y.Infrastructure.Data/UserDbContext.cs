@@ -18,12 +18,31 @@ public class UserDbContext : DbContext
             .Property(user => user.Role)
             .HasConversion<string>();
 
+        modelBuilder.Entity<UserEntity>()
+            .HasData(
+                new UserEntity
+                {
+                    Id = 1,
+                    CreatedAtUtc = DateTime.UtcNow,
+                    Role = Domain.Enums.UserRole.Admin,
+                    Username = "mehmet",
+                    PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q=="
+                },
+                new UserEntity
+                {
+                    Id = 2,
+                    CreatedAtUtc = DateTime.UtcNow,
+                    Role = Domain.Enums.UserRole.Admin,
+                    Username = "mecorp",
+                    PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q=="
+                }
+            );
         modelBuilder.Entity<ReferralTokenEntity>()
             .HasData(
                 new ReferralTokenEntity
                 {
                     Id = 1,
-                    Code = "CreateAsAdmin",
+                    Code = "CreateAsManager",
                     CreatedAtUtc = DateTime.UtcNow,
                     IsValid = true
                 },
