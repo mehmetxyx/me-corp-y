@@ -22,3 +22,6 @@
 /MeCorp.Y.Api.Tests/obj
 /MeCorp.Y.Application.Tests/bin
 /MeCorp.Y.Application.Tests/obj
+/MeCorp.Y.Infrastructure.Security/bin
+/MeCorp.Y.Infrastructure.Security/obj
+/MeCorp.Y.Web/MeCorp.Y.Web.csproj.user

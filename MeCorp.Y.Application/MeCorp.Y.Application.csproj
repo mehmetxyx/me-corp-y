@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeCorp.Y.Infrastructure.Data\MeCorp.Y.Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\MeCorp.Y.Security\MeCorp.Y.Infrastructure.Security.csproj" />
+    <ProjectReference Include="..\MeCorp.Y.Infrastructure.Security\MeCorp.Y.Infrastructure.Security.csproj" />
     <ProjectReference Include="..\MeCorp.Y.Shared\MeCorp.Y.Shared.csproj" />
   </ItemGroup>
 
