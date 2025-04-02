@@ -4,8 +4,8 @@ namespace MeCorp.Y.Application.Dtos;
 
 public class GetUserResponse
 {
-    public int Id { get; set; }
-    public string Username { get; set; }
-    public UserRole Role { get; set; }
-    public DateTime CreatedAtUtc { get; set; }
+    public required int Id { get; set; }
+    public required string Username { get; set; }
+    public required UserRole Role { get; set; }
+    public required DateTime CreatedAtUtc { get; set; }
 }

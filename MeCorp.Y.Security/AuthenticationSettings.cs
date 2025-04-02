@@ -2,12 +2,12 @@
 
 public class AuthenticationSettings
 {
-    public string SecretKey { get; set; }
-    public string HashKey { get; set; }
-    public string Audience { get; set; }
+    public required string SecretKey { get; set; }
+    public required string HashKey { get; set; }
+    public required string Audience { get; set; }
     public bool ValidateAudience { get; set; }
-    public string Issuer { get; set; }
+    public required string Issuer { get; set; }
     public bool ValidateIssuer { get; set; }
     public bool ValidateIssuerSigningKey { get; set; }
-    public TimeSpan ExpirationTimeSpan { get; set; }
+    public required TimeSpan ExpirationTimeSpan { get; set; }
 }

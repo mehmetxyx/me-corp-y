@@ -55,7 +55,8 @@ public class AuthControllerTests
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var valueResult = Assert.IsType<ApiResponse<RegisteredUserResponseDto>>(okResult.Value);
 
-        Assert.Equal("username1", valueResult.Data.Username);
+        Assert.NotNull(valueResult.Data);
+        Assert.Equal("username1", valueResult?.Data.Username ?? "");
     }
 
     [Fact]
@@ -110,7 +111,7 @@ public class AuthControllerTests
 
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
         var valueResult = Assert.IsType<ApiResponse<LoginUserResponseDto>>(okResult.Value);
-        
+        Assert.NotNull(valueResult.Data);
         Assert.Equal("username", valueResult.Data.Username);
     }
 
@@ -171,7 +172,7 @@ public class AuthControllerTests
     {
         var referralCode = "CreateAsManager";
 
-        var referralTokenResponse = new GetReferralTokenResponse {};
+        var referralTokenResponse = new GetReferralTokenResponse {Code = referralCode};
 
         authService.GetReferralTokenAsync(referralCode)
             .Returns(new Result<GetReferralTokenResponse>

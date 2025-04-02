@@ -23,6 +23,12 @@ public static class ServiceExtensions
                 var settings = configurationManager.GetSection("AuthenticationSettings")
                 .Get<AuthenticationSettings>();
 
+                if(settings is null)
+                {
+                    Console.WriteLine("AuthenticationSettings cant be found");
+                    return;
+                }
+
                 var securityKeyInBytes = Encoding.UTF8.GetBytes(settings.SecretKey);
                 var symmetricSecurityKey = new SymmetricSecurityKey(securityKeyInBytes);
 

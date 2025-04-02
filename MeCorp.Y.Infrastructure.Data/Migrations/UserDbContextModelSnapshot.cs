@@ -74,14 +74,14 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         {
                             Id = 1,
                             Code = "CreateAsManager",
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(5401),
+                            CreatedAtUtc = new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(5212),
                             IsValid = true
                         },
                         new
                         {
                             Id = 2,
                             Code = "FromLinkedin",
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(5717),
+                            CreatedAtUtc = new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(5455),
                             IsValid = true
                         });
                 });
@@ -117,7 +117,7 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(1545),
+                            CreatedAtUtc = new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(1071),
                             PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==",
                             Role = "Admin",
                             Username = "mehmet"
@@ -125,7 +125,7 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAtUtc = new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(1962),
+                            CreatedAtUtc = new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(1519),
                             PasswordHash = "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==",
                             Role = "Admin",
                             Username = "mecorp"

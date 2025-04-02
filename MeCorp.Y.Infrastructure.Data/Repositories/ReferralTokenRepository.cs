@@ -15,27 +15,16 @@ public class ReferralTokenRepository : IReferralTokenRepository
         this.dbContext = dbContext;
     }
 
-    public async Task<Result<ReferralToken>> Add(ReferralToken referralToken)
+    public async Task Add(ReferralToken referralToken)
     {
         var referralTokenEntity = new ReferralTokenEntity
         {
             Code = referralToken.Code,
-            IsValid = referralToken.IsValid
+            IsValid = referralToken.IsValid,
+            CreatedAtUtc = referralToken.CreatedAtUtc
         };
 
         await dbContext.ReferralTokens.AddAsync(referralTokenEntity);
-
-        return new Result<ReferralToken>
-        {
-            IsSuccessful = true,
-            Value = new ReferralToken
-            {
-                Id = referralTokenEntity.Id,
-                Code = referralTokenEntity.Code,
-                CreatedAtUtc = referralTokenEntity.CreatedAtUtc,
-                IsValid = referralToken.IsValid
-            }
-        };
     }
 
     public async Task<Result<ReferralToken>> GetByCode(string code)
@@ -52,8 +41,10 @@ public class ReferralTokenRepository : IReferralTokenRepository
             IsSuccessful = true,
             Value = new ReferralToken
             {
+                Id = referral.Id,
                 Code = referral.Code,
-                IsValid = referral.IsValid
+                IsValid = referral.IsValid,
+                CreatedAtUtc = referral.CreatedAtUtc
             }
         };
     }

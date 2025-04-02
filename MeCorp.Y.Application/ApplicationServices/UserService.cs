@@ -22,7 +22,7 @@ public class UserService : IUserService
     {
         Result<User> result = await userRepository.GetUserById(id);
 
-        if (!result.IsSuccessful)
+        if (result.IsSuccessful is false || result.Value is null)
             return new Result<GetUserResponse> { Message = result.Message };
 
         return new Result<GetUserResponse>

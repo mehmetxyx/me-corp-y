@@ -27,8 +27,11 @@ public class PasswordService : IPasswordService
         return hashString;
     }
 
-    public bool IsValidPassword(string password, string passwordHash)
+    public bool IsValidPassword(string? password, string? passwordHash)
     {
+        if (password is null || passwordHash is null)
+            return false;
+
         var currentPasswordHash = GetPasswordHash(password);
 
         return currentPasswordHash == passwordHash;

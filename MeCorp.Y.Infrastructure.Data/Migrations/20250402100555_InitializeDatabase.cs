@@ -66,8 +66,8 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                 columns: new[] { "Id", "Code", "CreatedAtUtc", "IsValid" },
                 values: new object[,]
                 {
-                    { 1, "CreateAsManager", new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(5401), true },
-                    { 2, "FromLinkedin", new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(5717), true }
+                    { 1, "CreateAsManager", new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(5212), true },
+                    { 2, "FromLinkedin", new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(5455), true }
                 });
 
             migrationBuilder.InsertData(
@@ -75,8 +75,8 @@ namespace MeCorp.Y.Infrastructure.Data.Migrations
                 columns: new[] { "Id", "CreatedAtUtc", "PasswordHash", "Role", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(1545), "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==", "Admin", "mehmet" },
-                    { 2, new DateTime(2025, 4, 1, 19, 49, 25, 108, DateTimeKind.Utc).AddTicks(1962), "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==", "Admin", "mecorp" }
+                    { 1, new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(1071), "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==", "Admin", "mehmet" },
+                    { 2, new DateTime(2025, 4, 2, 10, 5, 55, 93, DateTimeKind.Utc).AddTicks(1519), "k75FPfxn177WTgOsJH251v3sLKFCy7rH0tA1Xq3bveIf1KxwSsxnaIKTOnkA67DSohFqwUwCJz4ByFKZuDhM3Q==", "Admin", "mecorp" }
                 });
         }
 

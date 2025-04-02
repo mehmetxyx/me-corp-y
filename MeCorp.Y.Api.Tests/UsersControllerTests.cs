@@ -26,7 +26,8 @@ public class UsersControllerTests
         {
             Id = userId,
             Role = Domain.Enums.UserRole.Customer,
-            Username = "username"
+            Username = "username",
+            CreatedAtUtc = DateTime.UtcNow
         };
 
         userService.GetUserById(userId)

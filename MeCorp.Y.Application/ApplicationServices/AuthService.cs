@@ -50,7 +50,7 @@ public class AuthService : IAuthService
             if(userRequest.ReferralCode is not null)
             {
                 Result<ReferralToken> referralResult = await referralTokenRepository.GetByCode(userRequest.ReferralCode);
-                if(!referralResult.IsSuccessful || !referralResult.Value.IsValid)
+                if(referralResult.IsSuccessful is false || (referralResult.Value is not null && referralResult.Value.IsValid is false))
                     return new Result<RegisteredUserResponseDto> { Message = $"Referral code is invalid!" };
 
                 userRole = UserRole.Manager;
@@ -70,6 +70,8 @@ public class AuthService : IAuthService
             await unitOfWork.SaveAsync();
 
             var createUserResult = await userRepository.GetUsersByUsername(userRequest.Username);
+            if(createUserResult.IsSuccessful is false || createUserResult.Value is null)
+                return new Result<RegisteredUserResponseDto> { Message = $"User {userRequest.Username} already exist!" };
 
             return new Result<RegisteredUserResponseDto>
             {
@@ -100,7 +102,7 @@ public class AuthService : IAuthService
         {
             Result<BlockedIp> blockedIpResult = await blockedIpRepository.GetBlockedIpByIpAddress(userIp);
 
-            if (blockedIpResult.IsSuccessful &&  blockedIpResult.Value.IsBlocked)
+            if (blockedIpResult.IsSuccessful && blockedIpResult.Value is not null && blockedIpResult.Value.IsBlocked)
                 return new Result<LoginUserResponseDto> { Message = $"Ip address {userIp} blocked for too many failed logins!" };
 
             var blockedIp = blockedIpResult?.Value ?? new BlockedIp { 
@@ -109,7 +111,7 @@ public class AuthService : IAuthService
             };
 
             Result<User> userResult = await userRepository.GetUsersByUsername(loginUserRequest.Username);
-            if (!userResult.IsSuccessful)
+            if (userResult.IsSuccessful is false || userResult.Value is null)
                 return new Result<LoginUserResponseDto> { Message = $"User {loginUserRequest.Username} doesn't exist!" };
 
             if(!passwordService.IsValidPassword(loginUserRequest.Password, userResult.Value.PasswordHash))
@@ -160,7 +162,7 @@ public class AuthService : IAuthService
         {
             Result<ReferralToken> result = await referralTokenRepository.GetByCode(code);
 
-            if (!result.IsSuccessful)
+            if (result.IsSuccessful is false || result.Value is null)
             {
                 logger.LogError("Cannot find referral token code {code}", code);
                 return new Result<GetReferralTokenResponse> { Message = $"Cannot find referral token code {code}" };
@@ -193,7 +195,7 @@ public class AuthService : IAuthService
         {
             Result<ReferralToken> result = await referralTokenRepository.GetByCode(referralTokenRequest.Code);
             if (result.IsSuccessful)
-                return new Result<CreateReferralTokenResponse> { Message = $"User {referralTokenRequest.Code} already exist" };
+                return new Result<CreateReferralTokenResponse> { Message = $"ReferralCode {referralTokenRequest.Code} already exist" };
 
             var referralToken = new ReferralToken
             {
@@ -202,25 +204,22 @@ public class AuthService : IAuthService
                 CreatedAtUtc = DateTime.UtcNow
             };
 
-            Result<ReferralToken> addReferralTokenResult = await referralTokenRepository.Add(referralToken);
-
-            if (!addReferralTokenResult.IsSuccessful)
-                return new Result<CreateReferralTokenResponse>
-                {
-                    Message = $"ReferralToken {addReferralTokenResult.Value.Code} cannot be created."
-                };
-
+            await referralTokenRepository.Add(referralToken);
             await unitOfWork.SaveAsync();
+
+            Result<ReferralToken> addedReferralTokenResult = await referralTokenRepository.GetByCode(referralTokenRequest.Code);
+            if (addedReferralTokenResult.IsSuccessful is false || addedReferralTokenResult.Value is null)
+                return new Result<CreateReferralTokenResponse> { Message = $"ReferralCode {referralTokenRequest.Code} hasn't been saved" };
 
             return new Result<CreateReferralTokenResponse>
             {
                 IsSuccessful = true,
                 Value = new CreateReferralTokenResponse
                 {
-                    Id = addReferralTokenResult.Value.Id,
-                    Code = addReferralTokenResult.Value.Code,
-                    IsValid = addReferralTokenResult.Value.IsValid,
-                    CreatedAtUtc = addReferralTokenResult.Value.CreatedAtUtc
+                    Id = addedReferralTokenResult.Value.Id,
+                    Code = addedReferralTokenResult.Value.Code,
+                    IsValid = addedReferralTokenResult.Value.IsValid,
+                    CreatedAtUtc = addedReferralTokenResult.Value.CreatedAtUtc
                 }
             };
         }
