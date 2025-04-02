@@ -110,7 +110,9 @@ It also contains a simple a Web Frontend to consume this api.
     ```
 
     **Note:** The first run will take a few minutes.
+
     **Note:** It will run the migrations when the api runs.
+
     This will make sure a simple run.
 
 9. Wait untill you see following messages on the console
@@ -133,12 +135,11 @@ It also contains a simple a Web Frontend to consume this api.
     ```bash
      cd .\MeCorp.Y.Web\
 
-12 Run Web project
-
+12. Run Web project
     ```bash
     dotnet run
 
-13 Wait until you see the following messages:
+13. Wait until you see the following messages:
 
     ```bash
     info: Microsoft.Hosting.Lifetime[14]
